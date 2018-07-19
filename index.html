@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/includes.js" ></script>
+		<script type="text/javascript" src="js/sha256.js" ></script>
+		<style>
+			a:hover{
+				cursor:pointer;
+			}
+			#error{
+				color:red;
+				font:bold;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#login").hide();
+				$("#game").hide();
+				$("#cpass").hide();
+
+				getCookie();
+
+				$("#register").click(function(){
+					if($(this).text() === "Cancel")
+					{
+						showLogin();
+					}
+					else
+					{
+						showRegister();
+					}
+
+				});
+
+				$("#login_form").submit(function(e){
+					var user = $("#username").val();
+					var pass = $("#password").val();
+					var cpass = $("#cpasswd").val();
+					validateLogin(user, pass, cpass);
+					e.preventDefault();
+				});
+
+				$("#logout_form").submit(function(e){
+					e.preventDefault();
+					logout();
+				});
+
+				$("#game_form").submit(function(e){
+					try
+					{
+						var guess = $("#game_guess").val();
+						send_guess(guess);
+					}
+					catch(ex)
+					{
+						$("#error").text(ex);
+					}
+					e.preventDefault();
+				});
+			});
+		
+		</script>
+		<title>Guess the Number!</title>
+	</head>
+	<body>
+		<h1>Guess the number!</h1>
+		<h3><span id="msg"></span></h3>
+		<div id="scores"></div>
+		<div id="login">
+			<form id="login_form">
+				<p>Username: <input type="text" id="username" /> <br/></p>
+				<p>Password: <input type="password" id="password" /> <br/></p>
+				<p id="cpass">Confirm Password: <input type="password" id="cpasswd" /></p>
+				<input class="submit" type="submit" />
+				<a style="color:blue;text-decoration: underline" id="register">Create a new account...</a>
+			</form>
+		</div>
+		<div id="game">
+			<h3>Pick a number between 1 and 100:</h3>
+			<form id="game_form">
+				<p>Enter a guess: <input type="text" id="game_guess" /><input class="submit" type="submit"/></p>
+				<p><span id="game_msg" ></span></p>
+			</form>
+		</div>
+		<div id="logout">
+			<form id="logout_form">
+				<input class="submit" type="submit" value="Log out" />
+			</form>
+		</div>
+		<h4><span id="error"></span></h4>
+	</body>
+</html>
